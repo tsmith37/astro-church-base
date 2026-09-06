@@ -7,7 +7,9 @@ import preact from '@astrojs/preact';
 export default defineConfig({
   site: 'https://example.com', // Replace with your site URL
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes('/admin'),
+    }),
     preact(),
   ],
   markdown: {
@@ -15,5 +17,13 @@ export default defineConfig({
       theme: 'github-light',
       wrap: true
     }
-  }
+  },
+  vite: {
+    optimizeDeps: {
+      include: ['decap-cms-app', 'react', 'react-dom'],
+    },
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
+  },
 });
