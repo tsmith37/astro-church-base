@@ -3,10 +3,6 @@ import { parse as parseYaml } from 'yaml';
 
 const isDev = import.meta.env.DEV;
 const backendName = import.meta.env.PUBLIC_CMS_BACKEND ?? 'github';
-const githubAppId = import.meta.env.PUBLIC_GITHUB_APP_ID ?? '';
-
-// Phase A uses GitHub PKCE (PUBLIC_GITHUB_APP_ID). If that login flow fails on
-// Netlify, add an OAuth Function and set backend.base_url to the site origin.
 
 function getBackend() {
   if (isDev) {
@@ -21,8 +17,8 @@ function getBackend() {
     name: 'github',
     repo: 'tsmith37/astro-church-base',
     branch: 'main',
-    auth_type: 'pkce',
-    app_id: githubAppId,
+    base_url: window.location.origin,
+    auth_endpoint: '.netlify/functions/auth',
   };
 }
 
