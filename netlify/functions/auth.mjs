@@ -48,12 +48,35 @@ function errorScript(message) {
   `;
 }
 
+function firstHeaderValue(value) {
+  if (!value) {
+    return '';
+  }
+  return String(value).split(',')[0].trim();
+}
+
+function oauthRedirectUri(event) {
+  const fromEnv = process.env.GITHUB_OAUTH_REDIRECT_URI?.trim();
+  if (fromEnv) {
+    return fromEnv.replace(/\/$/, '');
+  }
+
+  const siteUrl = (process.env.URL || process.env.DEPLOY_PRIME_URL || '').replace(/\/$/, '');
+  if (siteUrl.startsWith('http')) {
+    return `${siteUrl}/.netlify/functions/auth`;
+  }
+
+  const host = firstHeaderValue(event.headers['x-forwarded-host'] || event.headers.host).replace(
+    /:\d+$/,
+    '',
+  );
+  return `https://${host}/.netlify/functions/auth`;
+}
+
 export async function handler(event) {
   const clientId = process.env.GITHUB_CLIENT_ID || process.env.PUBLIC_GITHUB_APP_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-  const proto = event.headers['x-forwarded-proto'] || 'https';
-  const host = event.headers['x-forwarded-host'] || event.headers.host;
-  const redirectUri = `${proto}://${host}/.netlify/functions/auth`;
+  const redirectUri = oauthRedirectUri(event);
 
   const params = event.queryStringParameters || {};
 
