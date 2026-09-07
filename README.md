@@ -278,6 +278,7 @@ Decap’s GitHub login uses the Netlify Function at `/.netlify/functions/auth` (
    - `PUBLIC_CMS_BACKEND=github`
    - `GITHUB_CLIENT_ID=<OAuth client ID>`
    - `GITHUB_CLIENT_SECRET=<OAuth client secret>` (never commit this)
+   - `GITHUB_OAUTH_REDIRECT_URI=https://dev-test-whfumc.netlify.app/.netlify/functions/auth` (must match the GitHub Redirect URI character-for-character)
 3. Update `site` in `astro.config.mjs` to the Netlify URL (or a custom domain).
 4. Redeploy. Sign in at `/admin` with GitHub. Publishing an entry opens a PR; Netlify Deploy Previews show the unpublished branch. Merge to `main` to update production.
 
