@@ -1,0 +1,20 @@
+---
+// Standalone Decap CMS shell — do not wrap in BaseLayout.
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Content Manager</title>
+    <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <script>
+      import '../../cms/cms.ts';
+    </script>
+  </body>
+</html>

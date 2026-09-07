@@ -1,0 +1,158 @@
+local_backend: false
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: editorial_workflow
+
+site_url: https://example.com
+display_url: https://example.com
+logo_url: /uploads/whfumc.svg
+
+media_folder: public/uploads
+public_folder: /uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Post
+    folder: src/content/blog
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    media_folder: ../../../public/uploads/blog
+    public_folder: /uploads/blog
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string, required: false, hint: "Leave blank to use the filename" }
+      - { name: pubDate, label: Publish date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { name: description, label: Description, widget: text }
+      - { name: author, label: Author, widget: string, default: "Church Staff" }
+      - name: image
+        label: Image
+        widget: object
+        required: false
+        fields:
+          - { name: url, label: File, widget: image }
+          - { name: alt, label: Alt text, widget: string }
+      - { name: tags, label: Tags, widget: list, default: ["general"] }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: sermons
+    label: Sermons
+    label_singular: Sermon
+    folder: src/content/sermons
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    media_folder: ../../../public/uploads/sermons
+    public_folder: /uploads/sermons
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string, required: false, hint: "Leave blank to use the filename" }
+      - { name: date, label: Date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { name: speaker, label: Speaker, widget: string }
+      - { name: series, label: Series, widget: string, required: false }
+      - { name: scripture, label: Scripture, widget: string, required: false }
+      - { name: audioUrl, label: Audio URL, widget: string, required: false }
+      - { name: videoUrl, label: Video URL, widget: string, required: false }
+      - { name: image, label: Thumbnail, widget: image, required: false }
+      - { name: summary, label: Summary, widget: text, required: false }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: events
+    label: Events
+    label_singular: Event
+    folder: src/content/events
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    media_folder: ../../../public/uploads/events
+    public_folder: /uploads/events
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Start date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { name: endDate, label: End date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
+      - { name: time, label: Time, widget: string, required: false, hint: 'e.g. "09:00 AM - 11:00 AM"' }
+      - { name: location, label: Location, widget: string }
+      - { name: image, label: Image, widget: image }
+      - { name: summary, label: Summary, widget: text }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: registrationRequired, label: Registration required, widget: boolean, default: false }
+      - { name: registrationLink, label: Registration URL, widget: string, required: false }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: ministries
+    label: Ministries
+    label_singular: Ministry
+    folder: src/content/ministries
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: name
+    extension: md
+    format: frontmatter
+    media_folder: ../../../public/uploads/ministries
+    public_folder: /uploads/ministries
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: logo, label: Logo, widget: image, required: false }
+      - { name: summary, label: Summary, widget: text }
+      - { name: coordinator, label: Coordinator, widget: string, required: false }
+      - { name: contact, label: Contact, widget: string, required: false }
+      - { name: schedule, label: Schedule, widget: string, required: false }
+      - { name: order, label: Order, widget: number, required: false, value_type: int }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: staff
+    label: Staff
+    label_singular: Staff member
+    folder: src/content/staff
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: name
+    extension: md
+    format: frontmatter
+    media_folder: ../../../public/uploads/staff
+    public_folder: /uploads/staff
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: title, label: Title, widget: string, hint: 'e.g. "Senior Pastor"' }
+      - { name: image, label: Photo, widget: image }
+      - { name: email, label: Email, widget: string, required: false }
+      - { name: phone, label: Phone, widget: string, required: false }
+      - { name: bio, label: Short bio, widget: text, required: false }
+      - { name: order, label: Order, widget: number, default: 0, value_type: int }
+      - { name: draft, label: Draft, widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: siteInfo
+    label: Site info
+    media_folder: ../../../public/uploads
+    public_folder: /uploads
+    files:
+      - name: officeHours
+        label: Office hours
+        file: src/content/siteInfo/office-hours.md
+        media_folder: ../../../public/uploads
+        public_folder: /uploads
+        fields:
+          - { name: title, label: Title, widget: string }
+          - { name: body, label: Body, widget: markdown }

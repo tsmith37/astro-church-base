@@ -65,10 +65,14 @@ npm run preview
 
 ```text
 ├── public/                   # Static assets (images, favicons, uploads)
+│   └── admin/
+│       └── config.yml        # Decap collection/media config
 ├── src/
 │   ├── assets/
 │   │   └── styles/
 │   │       └── global.css    # Tailwind entry + custom base styles
+│   ├── cms/
+│   │   └── cms.ts            # Decap CMS init (local vs GitHub vs Git Gateway)
 │   ├── components/
 │   │   ├── Cards/            # Reusable card components
 │   │   ├── Global/           # Header, Footer, Navigation
@@ -85,6 +89,8 @@ npm run preview
 │   │   ├── BaseLayout.astro  # Global HTML shell
 │   │   └── PostLayout.astro  # Layout for content pages
 │   ├── pages/
+│   │   ├── admin/
+│   │   │   └── index.astro   # Decap CMS admin UI (/admin/)
 │   │   ├── index.astro       # Homepage
 │   │   ├── about-us.astro    # About page
 │   │   ├── staff.astro       # Staff listing
@@ -108,6 +114,7 @@ npm run preview
 │   ├── content.config.ts     # Astro content collection schemas
 │   └── env.d.ts
 ├── astro.config.mjs
+├── netlify.toml
 ├── tailwind.config.cjs
 ├── postcss.config.cjs
 └── package.json
@@ -247,15 +254,47 @@ colors: {
 }
 ```
 
+## ✏️ Content editing with Decap CMS
+
+The public site still reads Markdown from `src/content/`. [Decap CMS](https://decapcms.org/) at `/admin` is the editor UI. On Netlify, saves use **editorial workflow**: drafts stay unpublished until you publish, which opens a GitHub pull request. Keep the `draft` frontmatter flag as well — merged entries with `draft: true` stay hidden on the site.
+
+### Local
+
+1. Start the site: `npm run dev`
+2. In a second terminal, start the local file proxy: `npm run cms`
+3. Open [http://localhost:4321/admin](http://localhost:4321/admin)
+
+No GitHub or Netlify login is required locally. The proxy writes files into this repo (`src/content/` and `public/uploads/`) with simple publish (no `cms/*` git branches). Editorial workflow PRs are for the deployed site. Leave `local_backend` to the admin init script (`src/cms/cms.ts`); do not set `local_backend: true` in `public/admin/config.yml` for production.
+
+### Netlify (Phase A — GitHub OAuth)
+
+Connect [tsmith37/astro-church-base](https://github.com/tsmith37/astro-church-base) as a new site in the [tsmith37 Netlify team](https://app.netlify.com/teams/tsmith37). `netlify.toml` sets `npm run build` and publish directory `dist`.
+
+1. Create a GitHub OAuth App with callback URLs:
+   - `http://localhost:4321/admin/`
+   - `https://<your-site>.netlify.app/admin/`
+2. In the Netlify site env vars, set:
+   - `PUBLIC_CMS_BACKEND=github`
+   - `PUBLIC_GITHUB_APP_ID=<OAuth client ID>` (this is public, not a client secret)
+3. Update `site` in `astro.config.mjs` to the Netlify URL (or a custom domain).
+4. Redeploy. Sign in at `/admin` with GitHub. Publishing an entry opens a PR; Netlify Deploy Previews show the unpublished branch. Merge to `main` to update production.
+
+If PKCE login fails, add a Netlify Function OAuth proxy and point the GitHub backend `base_url` at the site origin. Do not commit a client secret.
+
+### Netlify (Phase B — Identity + Git Gateway)
+
+For editors who should not need GitHub:
+
+1. Netlify → Identity → Enable, registration **Invite only**.
+2. Identity → Services → enable **Git Gateway** (authorize GitHub with `repo` so it can push branches and open PRs).
+3. Set `PUBLIC_CMS_BACKEND=git-gateway` and redeploy.
+4. Invite a staff email. Invite / password-recovery links land on the site root; the Identity widget there redirects to `/admin/`.
+
+Git Gateway PRs are authored as the GitHub account that enabled the gateway, not as each staff member.
+
 ## 🌐 Deployment
 
-This is a static site, so it can be deployed to:
-
-- [Netlify](https://www.netlify.com/)
-- [Vercel](https://vercel.com/)
-- [Cloudflare Pages](https://pages.cloudflare.com/)
-- [GitHub Pages](https://pages.github.com/)
-- Any static web host
+This is a static site. Prefer Netlify for Decap (Identity, Git Gateway, and Deploy Previews). It can also be deployed to Vercel, Cloudflare Pages, GitHub Pages, or any static host — without Netlify, use the GitHub backend (Phase A) or another OAuth proxy.
 
 Make sure to update the `site` URL in `astro.config.mjs` before deploying:
 
