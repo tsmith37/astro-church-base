@@ -42,6 +42,7 @@ async function initCms() {
       ...fileConfig,
       load_config_file: false,
       local_backend: isDev,
+      publish_mode: isDev ? 'simple' : 'editorial_workflow',
       backend: getBackend(),
     },
   });

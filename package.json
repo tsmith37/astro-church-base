@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "cms": "MODE=git decap-server",
+    "cms": "decap-server",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

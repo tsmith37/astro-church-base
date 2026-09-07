@@ -256,15 +256,15 @@ colors: {
 
 ## ✏️ Content editing with Decap CMS
 
-The public site still reads Markdown from `src/content/`. [Decap CMS](https://decapcms.org/) at `/admin` is the editor UI. Saves use **editorial workflow**: drafts stay unpublished until you publish, which opens a GitHub pull request. Keep the `draft` frontmatter flag as well — merged entries with `draft: true` stay hidden on the site.
+The public site still reads Markdown from `src/content/`. [Decap CMS](https://decapcms.org/) at `/admin` is the editor UI. On Netlify, saves use **editorial workflow**: drafts stay unpublished until you publish, which opens a GitHub pull request. Keep the `draft` frontmatter flag as well — merged entries with `draft: true` stay hidden on the site.
 
 ### Local
 
 1. Start the site: `npm run dev`
-2. In a second terminal, start the local Git proxy: `npm run cms` (`MODE=git` so editorial workflow works locally)
+2. In a second terminal, start the local file proxy: `npm run cms`
 3. Open [http://localhost:4321/admin](http://localhost:4321/admin)
 
-No GitHub or Netlify login is required locally. The proxy writes files into this repo (`src/content/` and `public/uploads/`). Leave `local_backend` to the admin init script (`src/cms/cms.ts`); do not set `local_backend: true` in `public/admin/config.yml` for production.
+No GitHub or Netlify login is required locally. The proxy writes files into this repo (`src/content/` and `public/uploads/`) with simple publish (no `cms/*` git branches). Editorial workflow PRs are for the deployed site. Leave `local_backend` to the admin init script (`src/cms/cms.ts`); do not set `local_backend: true` in `public/admin/config.yml` for production.
 
 ### Netlify (Phase A — GitHub OAuth)
 
