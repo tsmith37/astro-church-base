@@ -270,16 +270,16 @@ No GitHub or Netlify login is required locally. The proxy writes files into this
 
 Connect [tsmith37/astro-church-base](https://github.com/tsmith37/astro-church-base) as a new site in the [tsmith37 Netlify team](https://app.netlify.com/teams/tsmith37). `netlify.toml` sets `npm run build` and publish directory `dist`.
 
-1. Create a GitHub OAuth App with callback URLs:
-   - `http://localhost:4321/admin/`
-   - `https://<your-site>.netlify.app/admin/`
+Decap’s GitHub login uses the Netlify Function at `/.netlify/functions/auth` (not Netlify’s retired `api.netlify.com/auth` endpoint).
+
+1. Create a GitHub OAuth App. **Authorization callback URL** must be:
+   - `https://<your-site>.netlify.app/.netlify/functions/auth`
 2. In the Netlify site env vars, set:
    - `PUBLIC_CMS_BACKEND=github`
-   - `PUBLIC_GITHUB_APP_ID=<OAuth client ID>` (this is public, not a client secret)
+   - `GITHUB_CLIENT_ID=<OAuth client ID>`
+   - `GITHUB_CLIENT_SECRET=<OAuth client secret>` (never commit this)
 3. Update `site` in `astro.config.mjs` to the Netlify URL (or a custom domain).
 4. Redeploy. Sign in at `/admin` with GitHub. Publishing an entry opens a PR; Netlify Deploy Previews show the unpublished branch. Merge to `main` to update production.
-
-If PKCE login fails, add a Netlify Function OAuth proxy and point the GitHub backend `base_url` at the site origin. Do not commit a client secret.
 
 ### Netlify (Phase B — Identity + Git Gateway)
 
