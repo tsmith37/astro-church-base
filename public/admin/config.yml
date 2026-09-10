@@ -44,7 +44,6 @@ collections:
             label: File
             widget: image
             choose_url: false
-            hint: "Upload an image. External URLs will fail the site build."
             media_folder: ../../../public/uploads/blog
             public_folder: /uploads/blog
           - { name: alt, label: Alt text, widget: string }
