@@ -40,7 +40,13 @@ collections:
         widget: object
         required: false
         fields:
-          - { name: url, label: File, widget: image }
+          - name: url
+            label: File
+            widget: image
+            choose_url: false
+            hint: "Upload an image. External URLs will fail the site build."
+            media_folder: ../../../public/uploads/blog
+            public_folder: /uploads/blog
           - { name: alt, label: Alt text, widget: string }
       - { name: tags, label: Tags, widget: list, default: ["general"] }
       - { name: draft, label: Draft, widget: boolean, default: false }
@@ -66,7 +72,7 @@ collections:
       - { name: scripture, label: Scripture, widget: string, required: false }
       - { name: audioUrl, label: Audio URL, widget: string, required: false }
       - { name: videoUrl, label: Video URL, widget: string, required: false }
-      - { name: image, label: Thumbnail, widget: image, required: false }
+      - { name: image, label: Thumbnail, widget: image, required: false, choose_url: false }
       - { name: summary, label: Summary, widget: text, required: false }
       - { name: tags, label: Tags, widget: list, required: false }
       - { name: draft, label: Draft, widget: boolean, default: false }
@@ -89,7 +95,7 @@ collections:
       - { name: endDate, label: End date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
       - { name: time, label: Time, widget: string, required: false, hint: 'e.g. "09:00 AM - 11:00 AM"' }
       - { name: location, label: Location, widget: string }
-      - { name: image, label: Image, widget: image }
+      - { name: image, label: Image, widget: image, choose_url: false }
       - { name: summary, label: Summary, widget: text }
       - { name: tags, label: Tags, widget: list, required: false }
       - { name: registrationRequired, label: Registration required, widget: boolean, default: false }
@@ -111,7 +117,7 @@ collections:
     public_folder: /uploads/ministries
     fields:
       - { name: name, label: Name, widget: string }
-      - { name: logo, label: Logo, widget: image, required: false }
+      - { name: logo, label: Logo, widget: image, required: false, choose_url: false }
       - { name: summary, label: Summary, widget: text }
       - { name: coordinator, label: Coordinator, widget: string, required: false }
       - { name: contact, label: Contact, widget: string, required: false }
@@ -135,7 +141,7 @@ collections:
     fields:
       - { name: name, label: Name, widget: string }
       - { name: title, label: Title, widget: string, hint: 'e.g. "Senior Pastor"' }
-      - { name: image, label: Photo, widget: image }
+      - { name: image, label: Photo, widget: image, choose_url: false }
       - { name: email, label: Email, widget: string, required: false }
       - { name: phone, label: Phone, widget: string, required: false }
       - { name: bio, label: Short bio, widget: text, required: false }
